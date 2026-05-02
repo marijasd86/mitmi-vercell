@@ -1,0 +1,106 @@
+  <div class="auth-wrap">
+    <div class="auth-box">
+      <div style="text-align:center;margin-bottom:28px">
+        <div class="land-logo" style="display:inline-block;cursor:pointer" onclick="nav('landing')">mit<em>mi</em></div>
+      </div>
+      <h2 class="auth-title" id="register-title" data-t='{"sr":"Kreiraj nalog","en":"Create account"}'>Kreiraj nalog</h2>
+      <p class="auth-sub" id="register-sub" data-t='{"sr":"Nađi društvo za sledeći izlazak","en":"Find people to go out with"}'>Nađi društvo za sledeći izlazak</p>
+      <div class="auth-role-pill" id="register-role-pill" data-t='{"sr":"Praviš nalog za druženje","en":"Creating a social account"}'>Praviš nalog za druženje</div>
+      <div class="type-grid" style="margin-bottom:20px" id="reg-type-grid">
+        <button type="button" class="type-opt sel" id="reg-type-user" onclick="selectRegType('user')" aria-pressed="true">
+          <div class="type-opt-ico">👤</div>
+          <div class="type-opt-label" data-t='{"sr":"Napravi nalog za druženje","en":"Create a social account"}'>Napravi nalog za druženje</div>
+          <div class="type-opt-sub" data-t='{"sr":"Traži društvo za događaje i izlaske","en":"Find company for events and going out"}'>Traži društvo za događaje i izlaske</div>
+        </button>
+        <button type="button" class="type-opt" id="reg-type-venue" onclick="selectRegType('venue')" aria-pressed="false">
+          <div class="type-opt-ico">🏛️</div>
+          <div class="type-opt-label" data-t='{"sr":"Imam lokal / organizujem događaje","en":"I run a venue / organize events"}'>Imam lokal / organizujem događaje</div>
+          <div class="type-opt-sub" data-t='{"sr":"Objavi zvanične događaje i otvori organizer profil","en":"Publish official events and open an organizer profile"}'>Objavi zvanične događaje i otvori organizer profil</div>
+        </button>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="reg-email" data-t='{"sr":"Email","en":"Email"}'>Email</label>
+        <input class="form-input" type="email" id="reg-email" placeholder="tvoj@email.com" data-t-ph='{"sr":"tvoj@email.com","en":"you@email.com"}' oninput="clearFieldError('reg-email')">
+        <div class="form-error" id="reg-email-error" style="display:none"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="reg-pass" data-t='{"sr":"Lozinka","en":"Password"}'>Lozinka</label>
+        <input class="form-input" type="password" id="reg-pass" placeholder="min. 8 karaktera" data-t-ph='{"sr":"min. 8 karaktera","en":"min. 8 characters"}' oninput="clearFieldError('reg-pass')">
+        <div class="form-error" id="reg-pass-error" style="display:none"></div>
+      </div>
+      <div id="register-role-hint" style="font-size:12px;color:var(--ink4);line-height:1.55;margin:-4px 0 18px" data-t='{"sr":"Prvo napravi profil, pa biramo interesovanja i grad.","en":"Create the account first, then we will set your city and preferences."}'>
+        Prvo napravi profil, pa biramo interesovanja i grad.
+      </div>
+      <div id="register-user-basics" style="display:grid;gap:18px;margin:0 0 18px">
+        <div class="auth-legal-card" style="padding:16px 16px 14px">
+          <div style="font-size:14px;font-weight:700;color:var(--ink1);margin-bottom:6px" data-t='{"sr":"Osnovni podaci za bolji match","en":"Basic details for better matching"}'>Osnovni podaci za bolji match</div>
+          <div style="font-size:12px;color:var(--ink4);line-height:1.55" data-t='{"sr":"Ovo koristimo za sigurnije povezivanje, relevantnije preporuke i da kasnije ne moraš odmah da dopunjavaš profil.","en":"We use this for safer matching, better recommendations, and to avoid making you complete the same basics right after signup."}'>Ovo koristimo za sigurnije povezivanje, relevantnije preporuke i da kasnije ne moraš odmah da dopunjavaš profil.</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reg-city" data-t='{"sr":"Grad","en":"City"}'>Grad</label>
+          <input class="form-input form-input-city" id="reg-city" list="sr-city-options" placeholder="Počni da kucaš grad" data-t-ph='{"sr":"Počni da kucaš grad","en":"Start typing your city"}' oninput="clearFieldError('reg-city')">
+          <div class="form-hint" data-t='{"sr":"Kasnije možeš da ga promeniš u profilu ili podešavanjima.","en":"You can change it later in your profile or settings."}'>Kasnije možeš da ga promeniš u profilu ili podešavanjima.</div>
+          <div class="form-error" id="reg-city-error" style="display:none"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reg-birth-year" data-t='{"sr":"Godište","en":"Birth year"}'>Godište</label>
+          <input class="form-input" type="number" id="reg-birth-year" inputmode="numeric" min="1940" max="2008" placeholder="npr. 1998" data-t-ph='{"sr":"npr. 1998","en":"e.g. 1998"}' oninput="clearFieldError('reg-birth-year')">
+          <div class="form-hint" data-t='{"sr":"Ne mora da bude javno prikazano, ali ostaje u backendu za sigurnije povezivanje i filtere.","en":"It does not have to be public, but it stays in the backend for safer matching and filters."}'>Ne mora da bude javno prikazano, ali ostaje u backendu za sigurnije povezivanje i filtere.</div>
+          <div class="form-error" id="reg-birth-year-error" style="display:none"></div>
+        </div>
+        <div class="form-group">
+          <div class="form-label" id="reg-interests-label" data-t='{"sr":"Interesovanja","en":"Interests"}'>Interesovanja</div>
+          <div class="int-grid" id="reg-interest-grid" role="group" aria-labelledby="reg-interests-label">
+            <div class="int-item" data-interest="koncerti_klubovi" onclick="toggleRegisterInterest(this)"><span class="int-ico">🎵</span><span class="int-label">Koncerti / klubovi</span></div>
+            <div class="int-item" data-interest="kafane_barovi" onclick="toggleRegisterInterest(this)"><span class="int-ico">🍸</span><span class="int-label">Kafane / barovi</span></div>
+            <div class="int-item" data-interest="kultura" onclick="toggleRegisterInterest(this)"><span class="int-ico">🎭</span><span class="int-label">Kultura</span></div>
+            <div class="int-item" data-interest="sport" onclick="toggleRegisterInterest(this)"><span class="int-ico">⚽</span><span class="int-label">Sport i rekreacija</span></div>
+            <div class="int-item" data-interest="mirnija_druzenja" onclick="toggleRegisterInterest(this)"><span class="int-ico">☕</span><span class="int-label">Mirnija druženja</span></div>
+          </div>
+          <div class="form-hint" id="reg-interest-count">Izabrano: 0</div>
+          <div class="form-error" id="reg-interests-error" style="display:none"></div>
+        </div>
+        <div class="form-group">
+          <div class="form-label" id="reg-tempo-label" data-t='{"sr":"Koliko često si za izlazak?","en":"How often are you up for going out?"}'>Koliko često si za izlazak?</div>
+          <div class="auth-legal-card" id="reg-tempo-block" role="radiogroup" aria-labelledby="reg-tempo-label" style="margin-top:8px">
+            <label class="auth-check-row">
+              <input type="radio" name="reg-social-tempo" value="retko" onchange="clearFieldError('reg-tempo-block')">
+              <span><strong data-t='{"sr":"Retko","en":"Rarely"}'>Retko</strong> <span data-t='{"sr":"· više planiram unapred i ne izlazim često","en":"· I plan ahead more and do not go out often"}'>· više planiram unapred i ne izlazim često</span></span>
+            </label>
+            <label class="auth-check-row">
+              <input type="radio" name="reg-social-tempo" value="povremeno" checked onchange="clearFieldError('reg-tempo-block')">
+              <span><strong data-t='{"sr":"Povremeno","en":"Sometimes"}'>Povremeno</strong> <span data-t='{"sr":"· volim dobar plan, ali ne svaki vikend","en":"· I like a good plan, but not every weekend"}'>· volim dobar plan, ali ne svaki vikend</span></span>
+            </label>
+            <label class="auth-check-row">
+              <input type="radio" name="reg-social-tempo" value="cesto" onchange="clearFieldError('reg-tempo-block')">
+              <span><strong data-t='{"sr":"Često","en":"Often"}'>Često</strong> <span data-t='{"sr":"· često sam raspoložen/a za događaje i nova druženja","en":"· I am often up for events and new connections"}'>· često sam raspoložen/a za događaje i nova druženja</span></span>
+            </label>
+          </div>
+          <div class="form-error" id="reg-tempo-block-error" style="display:none"></div>
+        </div>
+      </div>
+      <div class="auth-legal-card" id="reg-legal-block">
+        <div class="auth-legal-summary" data-t-html='{"sr":"Platforma je za 18+, svita nije organizator događaja i lični podaci se ne prodaju. <a onclick=\"nav(&apos;terms&apos;)\" style=\"color:var(--purple);cursor:pointer\">Puni uslovi</a>","en":"The platform is 18+, svita is not the event organizer, and personal data is not sold. <a onclick=\"nav(&apos;terms&apos;)\" style=\"color:var(--purple);cursor:pointer\">Full terms</a>"}'>
+          Platforma je za 18+, svita nije organizator događaja i lični podaci se ne prodaju.
+          <a onclick="nav('terms')" style="color:var(--purple);cursor:pointer">Puni uslovi</a>
+        </div>
+        <label class="auth-check-row">
+          <input type="checkbox" id="reg-age-check" onchange="clearFieldError('reg-legal-block')">
+          <span data-t='{"sr":"Imam najmanje 18 godina.","en":"I am at least 18 years old."}'>Imam najmanje 18 godina.</span>
+        </label>
+        <label class="auth-check-row">
+          <input type="checkbox" id="reg-legal-check" onchange="clearFieldError('reg-legal-block')">
+          <span data-t-html='{"sr":"Razumem pravila i prihvatam <a onclick=\"nav(&apos;terms&apos;)\" style=\"color:var(--purple);cursor:pointer\">Uslove korišćenja</a> i <a onclick=\"nav(&apos;privacy&apos;)\" style=\"color:var(--purple);cursor:pointer\">Politiku privatnosti</a>.","en":"I understand the rules and accept the <a onclick=\"nav(&apos;terms&apos;)\" style=\"color:var(--purple);cursor:pointer\">Terms of Service</a> and <a onclick=\"nav(&apos;privacy&apos;)\" style=\"color:var(--purple);cursor:pointer\">Privacy Policy</a>."}'>Razumem pravila i prihvatam <a onclick="nav('terms')" style="color:var(--purple);cursor:pointer">Uslove korišćenja</a> i <a onclick="nav('privacy')" style="color:var(--purple);cursor:pointer">Politiku privatnosti</a>.</span>
+        </label>
+        <div class="form-error" id="reg-legal-block-error" style="display:none"></div>
+      </div>
+      <div id="register-auth-notice" style="display:none;margin:0 0 14px;padding:12px 14px;border:1px solid;border-radius:12px;font-size:13px;line-height:1.5"></div>
+      <button class="btn btn-purple btn-full" onclick="handleRegister()" id="reg-submit-btn" data-t='{"sr":"Nastavi","en":"Continue"}'>Nastavi</button>
+      <div class="auth-footer" data-t-html='{"sr":"Imaš nalog? <a onclick=\"nav(&apos;login&apos;)\">Prijavi se</a>","en":"Have account? <a onclick=\"nav(&apos;login&apos;)\">Log in</a>"}'>
+        Imaš nalog? <a onclick="nav('login')">Prijavi se</a>
+      </div>
+      <div style="text-align:center;margin-top:10px">
+        <a style="font-size:13px;color:var(--ink4);cursor:pointer" onclick="nav('landing')" data-t='{"sr":"← Nazad","en":"← Back"}'>← Nazad</a>
+      </div>
+    </div>
+  </div>
