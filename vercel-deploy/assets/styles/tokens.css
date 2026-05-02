@@ -1,0 +1,76 @@
+/* ═══════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════ */
+:root {
+  /* Brand core */
+  --bg:        #F5F0EC;
+  --bg2:       #F8F3EE;
+  --bg3:       #FBF7F3;
+  --white:     #FFFFFF;
+  --surface:   #FFFCF8;
+  --surface-soft:#F8F3EE;
+  --ink:       #151313;
+  --ink2:      #2C2725;
+  --ink3:      #6F6661;
+  --ink4:      #8A807A;
+  --border:    #E3D8D2;
+  --border2:   #E3D8D2;
+  --line-strong:#E3D8D2;
+  --bg-soft:   #FBF7F3;
+
+  /* Brand tones */
+  --night-navy:#7F2A2F;
+  --royal-blue:#9A3438;
+  --purple:    #9A3438;
+  --purple2:   #8F2E2A;
+  --purple3:   #9A3438;
+  --purple-bg: #F4E9E8;
+  --purple-br: rgba(154,52,56,0.24);
+  --green:     #12724A;
+  --green-bg:  #EAF7F0;
+  --red:       #B53333;
+  --red-bg:    #FCEAEA;
+  --gold:      #BA6C17;
+  --gold-bg:   #FFF2E6;
+  --warning:   #BA6C17;
+  --danger:    #B53333;
+  --amber:     #BA6C17;
+  --amber2:    #BA6C17;
+  --amber-bg:  #FFF2E6;
+  --amber-br:  rgba(186,108,23,0.18);
+
+  /* Shadows */
+  --sh-sm: 0 6px 18px rgba(23,20,28,0.05);
+  --sh:    0 12px 30px rgba(23,20,28,0.08);
+  --sh-lg: 0 20px 50px rgba(46,21,91,0.10);
+
+  /* Radii */
+  --r:    16px;
+  --r-lg: 22px;
+  --r-xl: 28px;
+
+  /* Typography */
+  --font-ui: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-display: 'DM Serif Display', Georgia, serif;
+
+  /* Event gradijenti */
+  --grad-hero-main: linear-gradient(135deg, #7F2A2F 0%, #8F2E2A 52%, #9A3438 100%);
+  --grad-music:   linear-gradient(135deg,#4D2424 0%,#6B2E2E 100%);
+  --grad-culture: linear-gradient(135deg,#4B332F 0%,#5A3B35 100%);
+  --grad-nature:  linear-gradient(135deg,#35493A 0%,#48624A 100%);
+  --grad-sport:   linear-gradient(135deg,#7D3A2A 0%,#A54A33 100%);
+  --grad-social:  linear-gradient(135deg,#6E4127 0%,#8A4F2D 100%);
+
+  /* Tranzicije */
+  --tr-fast:   all .15s ease;
+  --tr-normal: all .22s cubic-bezier(.34,1.2,.64,1);
+  --tr-slow:   all .32s cubic-bezier(.25,.46,.45,.94);
+  --page-dur:  0.22s;
+  --bottom-nav-space: 84px;
+  --page-pad: clamp(14px, 2.8vw, 20px);
+  --app-shell-max: 46rem;
+  --content-max: 42rem;
+  --landing-max: 48rem;
+  --dialog-max: 30rem;
+  --desktop-nav-w: 92px;
+}
