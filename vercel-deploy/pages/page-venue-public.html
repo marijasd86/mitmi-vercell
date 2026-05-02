@@ -1,0 +1,70 @@
+  <div class="app-bar">
+    <button class="btn btn-icon btn-ghost" onclick="navBack()" style="border-radius:8px">←</button>
+    <div class="app-bar-title" id="vp-name">Profil organizatora</div>
+    <button class="btn btn-ghost btn-sm" id="vp-follow-btn" onclick="toggleVenueFollow(this)">
+      + Prati
+    </button>
+  </div>
+
+  <!-- Hero baner -->
+  <div style="height:220px;position:relative;overflow:hidden;background:#18181b" id="vp-hero-bg">
+    <div class="ev-img-a" id="vp-hero-inner" style="position:absolute;inset:0;background-size:cover;background-position:center;transition:opacity .3s"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(0,0,0,.75))"></div>
+      <span class="tag tag-outline" style="position:absolute;top:12px;right:12px;font-size:11px" id="vp-verified-badge">Organizator</span>
+    <button id="vp-cover-btn" onclick="document.getElementById('vp-cover-input').click()" style="position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,.55);color:#fff;border:1.5px solid rgba(255,255,255,.35);border-radius:20px;padding:6px 13px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer;backdrop-filter:blur(4px)">
+      📷 Promeni cover
+    </button>
+    <input type="file" id="vp-cover-input" accept="image/*" style="display:none" onchange="handleVenueCover(this)">
+  </div>
+
+  <!-- Info -->
+  <div style="padding:16px;background:var(--white);border-bottom:1px solid var(--border)">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+      <div style="width:56px;height:56px;border-radius:14px;background:var(--purple-bg);color:var(--purple3);font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0" id="vp-av">O</div>
+      <div>
+        <div style="font-size:18px;font-weight:800;color:var(--ink)" id="vp-title">Profil organizatora</div>
+        <div style="font-size:13px;color:var(--ink3)" id="vp-type">Grad · status</div>
+      </div>
+    </div>
+    <!-- Stats -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px">
+      <div style="text-align:center;background:var(--bg);border-radius:10px;padding:10px">
+        <div style="font-size:18px;font-weight:800;color:var(--purple)" id="vp-events-count">0</div>
+        <div style="font-size:11px;color:var(--ink3)" data-t='{"sr":"događaja","en":"events"}'>događaja</div>
+      </div>
+      <div style="text-align:center;background:var(--bg);border-radius:10px;padding:10px">
+        <div style="font-size:18px;font-weight:800;color:var(--purple)" id="vp-followers">0</div>
+        <div style="font-size:11px;color:var(--ink3)" id="vp-followers-label" data-t='{"sr":"pratilaca","en":"followers"}'>pratilaca</div>
+      </div>
+      <div style="text-align:center;background:var(--bg);border-radius:10px;padding:10px" id="vp-rating-card">
+        <div style="display:flex;align-items:center;justify-content:center;gap:3px">
+          <span style="font-size:18px;font-weight:800;color:var(--purple)" id="vp-rating">0.0</span>
+          <span style="color:#FBBF24;font-size:14px">★</span>
+        </div>
+        <div style="font-size:11px;color:var(--ink3)" id="vp-rating-meta" data-t='{"sr":"prosečna ocena","en":"avg rating"}'>prosečna ocena</div>
+      </div>
+    </div>
+    <!-- Opis -->
+    <p style="font-size:14px;color:var(--ink3);line-height:1.6;margin-bottom:12px" id="vp-desc">Opis organizatora još nije dodat.</p>
+    <div id="vp-public-meta" style="display:none;flex-direction:column;gap:6px;margin-bottom:12px"></div>
+    <!-- Akcije -->
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-purple btn-sm btn-full" onclick="nav('browse')" data-t='{"sr":"Vidi događaje","en":"See events"}'>Vidi događaje</button>
+      <button class="btn btn-outline btn-sm" type="button" onclick="openCurrentVenueQr()" data-t='{"sr":"QR","en":"QR"}'>QR</button>
+      <button class="btn btn-ghost btn-sm" id="vp-secondary-btn" style="display:none">Akcija</button>
+    </div>
+    <div id="vp-admin-actions" style="display:none;gap:8px;flex-wrap:wrap;margin-top:10px">
+      <button class="btn btn-purple btn-sm" id="vp-admin-edit-btn">Uredi profil</button>
+      <button class="btn btn-outline btn-sm" id="vp-admin-review-btn">Admin lista organizatora</button>
+      <button class="btn btn-danger btn-sm" id="vp-admin-hide-btn">Sakrij organizatora</button>
+    </div>
+    <div id="vp-dispute-note" style="display:none;font-size:12px;color:var(--ink3);line-height:1.5;margin-top:10px;opacity:.82">
+      Ako ovaj profil pogrešno predstavlja tvoje mesto ili organizaciju, pošalji prijavu kroz aplikaciju ili sačekaj odgovor na zahtev za preuzimanje.
+    </div>
+  </div>
+
+  <!-- Aktivni događaji -->
+  <div style="padding:16px">
+    <div class="section-label" data-t='{"sr":"Aktivni događaji","en":"Active events"}'>Aktivni događaji</div>
+    <div class="ev-grid-2" id="vp-events-grid"></div>
+  </div>

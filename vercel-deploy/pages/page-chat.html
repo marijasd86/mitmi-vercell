@@ -1,0 +1,70 @@
+  <div class="chat-top">
+    <button class="btn btn-icon btn-ghost" onclick="nav('chats')" style="border-radius:8px">←</button>
+    <div class="av av-40 av-purple" id="chat-top-av" style="border-radius:10px;flex-shrink:0">M</div>
+    <div style="flex:1;min-width:0">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:1px">
+        <div class="chat-top-name" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Razgovor</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:5px">
+        <span id="chat-type-badge" style="font-size:9px;font-weight:700;padding:1px 6px;border-radius:4px;background:var(--bg3);color:var(--ink4);letter-spacing:.04em;text-transform:uppercase;flex-shrink:0">GRUPNI</span>
+        <div class="chat-top-sub" data-t='{"sr":"Poruke i dogovor oko izlaska","en":"Messages and going-out plans"}'>Poruke i dogovor oko izlaska</div>
+      </div>
+    </div>
+    <button class="btn btn-icon btn-ghost" style="border-radius:8px" id="chat-action-btn" onclick="nav('event')">ℹ</button>
+    <button class="btn btn-icon btn-ghost" style="border-radius:8px;display:none" id="chat-more-btn" onclick="toggleChatStatus()">⋯</button>
+  </div>
+  <div class="chat-msgs" id="chat-msgs"></div>
+  <!-- Trust bar (Faza 2 hook — vidljivo kad je privatni chat) -->
+  <div class="chat-trust-bar" id="chat-trust-bar" style="display:none">
+    <span style="font-size:12px;color:var(--ink3);flex:1" data-t='{"sr":"Osoba — trust nivo:","en":"Person — trust level:"}'>Osoba — trust nivo:</span>
+    <span class="trust-badge trust-email">✉</span>
+  </div>
+  <!-- Mini profil osobe u DM (samo za DM) -->
+  <div class="chat-mini-profile" id="chat-mini-profile" style="display:none" onclick="openActiveChatProfile()">
+    <div class="av av-32 av-purple" id="chat-mini-av">A</div>
+    <div>
+      <div class="chat-mini-name" id="chat-mini-name">Korisnik</div>
+      <div class="chat-mini-meta">
+        <span class="trust-badge trust-email" style="padding:1px 5px;font-size:9px">✉</span>
+        <span>★ 0.0 · javni profil</span>
+      </div>
+    </div>
+    <span style="font-size:11px;color:var(--purple);margin-left:auto">Profil →</span>
+  </div>
+  <div class="chat-event-context" id="chat-event-context" style="display:none">
+    <div class="chat-event-context-label">CHAT ZA DOGAĐAJ</div>
+    <div class="chat-event-context-title" id="chat-event-context-title">Naziv događaja</div>
+    <div class="chat-event-context-meta" id="chat-event-context-meta">Dogovor oko zajedničkog odlaska</div>
+  </div>
+
+  <!-- Status sistem (samo za DM) — sakriveno iza "vise opcija" -->
+  <div class="chat-status-bar" id="chat-status-bar" style="display:none">
+    <div class="chat-status-row" id="chat-status-row">
+      <span class="chat-status-label" data-t='{"sr":"Status","en":"Status"}'>Status</span>
+      <div class="status-steps">
+        <div class="status-step active-pricamo" id="ss-pricamo" onclick="requestDMStatus('pricamo')" data-t='{"sr":"Razgovarate","en":"Talking"}'>Razgovarate</div>
+        <div class="status-step" id="ss-mozda" onclick="requestDMStatus('mozda')" data-t='{"sr":"Čeka potvrdu","en":"Awaiting confirmation"}'>Čeka potvrdu</div>
+        <div class="status-step" id="ss-potvrdeno" onclick="requestDMStatus('potvrdeno')" data-t='{"sr":"Idete zajedno","en":"Going together"}'>Idete zajedno</div>
+        <div class="status-step" id="ss-odustao" onclick="requestDMStatus('odustao')" data-t='{"sr":"Odustao","en":"Backed out"}'>Odustao</div>
+      </div>
+    </div>
+    <button class="chat-propose-btn" id="chat-propose-btn" onclick="clickIdemZajedno()">
+      <span>📅</span>
+      <span id="idemo-btn-text" data-t='{"sr":"Predloži zajednički odlazak","en":"Propose going together"}'>Predloži zajednički odlazak</span>
+    </button>
+    <div class="chat-action-stack" id="chat-action-stack">
+      <button class="btn btn-outline btn-full" id="chat-hide-btn" onclick="hideActiveConversation()">Ukloni iz mog inboxa</button>
+      <button class="btn btn-ghost btn-full" id="chat-leave-btn" onclick="leaveActiveChat()" style="display:none">Napusti chat</button>
+    </div>
+  </div>
+
+  <!-- Stari idemo bar — zadrzamo id za kompatibilnost -->
+  <div id="idemo-bar" style="display:none">
+    <div id="idemo-status-text"></div>
+    <button id="idemo-btn"></button>
+  </div>
+
+  <div class="chat-inp">
+    <input class="chat-field" type="text" id="chat-input" placeholder="Napiši poruku..." data-t-ph='{"sr":"Napiši poruku...","en":"Type a message..."}'>
+    <button class="chat-send" onclick="sendMsg()">→</button>
+  </div>

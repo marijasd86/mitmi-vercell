@@ -1,0 +1,185 @@
+  <div class="app-bar app-bar-centered app-bar-balanced">
+    <button class="btn btn-icon btn-ghost" onclick="navBack()" style="border-radius:8px">←</button>
+    <div class="app-bar-title" data-t='{"sr":"Moj profil","en":"My profile"}'>Moj profil</div>
+    <div class="app-bar-actions">
+      <button class="btn btn-ghost btn-sm" id="profile-admin-shortcut" onclick="openAdminDrafts()" style="display:none" data-t='{"sr":"Admin","en":"Admin"}'>Admin</button>
+      <button class="btn btn-ghost btn-sm" onclick="nav('settings')" data-t='{"sr":"⚙ Podeš.","en":"⚙ Settings"}' aria-label="Podešavanja">⚙ Podeš.</button>
+    </div>
+  </div>
+  <div class="prof-hero">
+    <div class="profile-hero-grid">
+      <div class="profile-hero-media">
+        <div class="av av-80 av-purple" id="profile-avatar">?</div>
+      </div>
+      <div class="prof-main">
+        <div class="prof-name" id="profile-name">Tvoj profil</div>
+        <div class="prof-bio" id="profile-bio">Dodaj kratki opis i interesovanja da bi drugi lakse znali kakvo drustvo trazis.</div>
+        <div class="profile-summary-row">
+          <div class="prof-rating" id="profile-rating-summary" style="display:none">
+            <span class="star">★</span>
+            <span id="profile-rating-value" style="font-size:16px;font-weight:800;color:var(--ink)">0.0</span>
+            <span id="profile-rating-count" style="font-size:13px;color:var(--ink3)">0 ocena</span>
+          </div>
+        </div>
+        <div class="profile-stats-band">
+          <div class="profile-code-row">
+            <div class="profile-code-copy">
+              <div class="profile-code-label" data-t='{"sr":"Kod profila","en":"Profile code"}'>Kod profila</div>
+              <div class="profile-code-value" id="profile-code-value">@svita</div>
+            </div>
+            <button class="btn btn-outline btn-sm" type="button" onclick="copyMyProfileCode()" data-t='{"sr":"Kopiraj kod","en":"Copy code"}'>Kopiraj kod</button>
+          </div>
+          <div class="prof-stats">
+            <div class="profile-stat-card"><div class="ps-n" id="profile-own-events">0</div><div class="ps-l" data-t='{"sr":"događaja","en":"events"}'>događaja</div></div>
+            <div class="profile-stat-card"><div class="ps-n" id="profile-own-followers">0</div><div class="ps-l" data-t='{"sr":"pratilaca","en":"followers"}'>pratilaca</div></div>
+            <div class="profile-stat-card"><div class="ps-n" id="profile-own-following">0</div><div class="ps-l" data-t='{"sr":"prati","en":"following"}'>prati</div></div>
+          </div>
+        </div>
+        <div class="profile-inline-groups">
+          <div id="profile-basics-summary" class="profile-chip-row" style="display:none"></div>
+          <div class="prof-socials" id="profile-socials"></div>
+        </div>
+      </div>
+      <div class="profile-hero-actions">
+        <button class="btn btn-purple btn-sm" onclick="nav('edit-profile')" data-t='{"sr":"Uredi profil","en":"Edit profile"}'>Uredi profil</button>
+        <button class="btn btn-ghost btn-sm" onclick="shareMyProfile()" data-t='{"sr":"Kopiraj link","en":"Copy link"}'>Kopiraj link</button>
+        <button class="btn btn-ghost btn-sm" onclick="openMyProfileQr()" data-t='{"sr":"QR profila","en":"Profile QR"}'>QR profila</button>
+        <button class="btn btn-ghost btn-sm" id="profile-organizer-btn" onclick="nav('venue')">Organizer panel</button>
+        <button class="btn btn-ghost btn-sm" onclick="handleLogout()" style="color:var(--ink3)" data-t='{"sr":"Odjavi se","en":"Log out"}'>Odjavi se</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trust score bar -->
+  <div class="profile-trust-panel">
+    <div class="trust-score-label">
+      <span class="trust-score-text" id="profile-trust-text" data-t='{"sr":"Profil deluje pouzdano","en":"Profile looks trustworthy"}'>Profil deluje pouzdano</span>
+      <span class="trust-score-pct" id="profile-trust-pct">0%</span>
+    </div>
+    <div class="trust-score-bar" style="margin:6px 0 0">
+      <div class="trust-score-fill" id="profile-trust-fill" style="width:0%"></div>
+    </div>
+    <div style="font-size:11px;color:var(--ink4);padding:4px 0 10px" id="profile-trust-helper" data-t='{"sr":"Dodaj verifikacije da povećaš poverenje","en":"Add verifications to increase trust"}'>Dodaj verifikacije da povećaš poverenje</div>
+  </div>
+
+  <div id="profile-review-card" class="card" style="display:none;margin:12px 16px 0;padding:16px 18px">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+      <div>
+        <div style="font-size:18px;font-weight:800;letter-spacing:-.02em;color:var(--ink)">Oceni iskustvo</div>
+        <div id="profile-review-card-copy" style="font-size:13px;color:var(--ink3);margin-top:4px;line-height:1.55">Imaš iskustva sa događaja koja čekaju tvoju ocenu.</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="tag tag-purple" id="profile-review-count">0</span>
+        <button class="btn btn-purple btn-sm" onclick="openPendingReviews()">Otvori</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="profile-completion-card" class="card" style="display:none;margin:12px 16px 0;padding:16px 18px">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+      <div>
+        <div style="font-size:18px;font-weight:800;letter-spacing:-.02em;color:var(--ink)" data-t='{"sr":"Dovrši osnovne podatke","en":"Complete your basics"}'>Dovrši osnovne podatke</div>
+        <div id="profile-completion-copy" style="font-size:13px;color:var(--ink3);margin-top:4px;line-height:1.55">Dodaj grad, godište i preference da bi preporuke i povezivanje bili smisleniji.</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="tag tag-outline" id="profile-completion-count">0</span>
+        <button class="btn btn-purple btn-sm" onclick="goToUserOnboarding()" data-t='{"sr":"Dovrši","en":"Complete"}'>Dovrši</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="profile-organizer-summary" class="card" style="display:none;margin:12px 16px 0;padding:16px 18px">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap">
+      <div style="min-width:0;flex:1">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink4);margin-bottom:8px" data-t='{"sr":"ORGANIZER PROFIL","en":"ORGANIZER PROFILE"}'>ORGANIZER PROFIL</div>
+        <div id="profile-organizer-summary-name" style="font-size:18px;font-weight:800;letter-spacing:-.02em;color:var(--ink)">Organizer profil</div>
+        <div id="profile-organizer-summary-meta" style="font-size:13px;color:var(--ink3);margin-top:4px;line-height:1.5" data-t='{"sr":"Podaci organizatora će se pojaviti ovde.","en":"Organizer details will appear here."}'>Podaci organizatora će se pojaviti ovde.</div>
+        <div id="profile-organizer-summary-desc" style="font-size:13px;color:var(--ink2);margin-top:10px;line-height:1.6"></div>
+        <div id="profile-organizer-summary-public" style="display:none;flex-direction:column;gap:6px;margin-top:10px"></div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-outline btn-sm" type="button" onclick="nav('edit-venue')" data-t='{"sr":"Uredi organizer","en":"Edit organizer"}'>Uredi organizer</button>
+        <button class="btn btn-purple btn-sm" type="button" onclick="nav('venue')" data-t='{"sr":"Otvori panel","en":"Open dashboard"}'>Otvori panel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="profile-info-grid">
+    <div class="profile-meta-strip">
+      <div class="profile-meta-chip">
+        <span class="profile-meta-chip-icon">✉️</span>
+        <div class="profile-meta-chip-copy">
+          <div class="profile-meta-chip-label" data-t='{"sr":"Email potvrđen","en":"Email verified"}'>Email potvrđen</div>
+          <div class="profile-meta-chip-value" id="profile-email">[email&#160;protected]</div>
+        </div>
+      </div>
+      <div class="profile-meta-chip">
+        <span class="profile-meta-chip-icon">📍</span>
+        <div class="profile-meta-chip-copy">
+          <div class="profile-meta-chip-label" data-t='{"sr":"Prikazana lokacija","en":"Visible location"}'>Prikazana lokacija</div>
+          <div class="profile-meta-chip-value" id="profile-location-value">Srbija</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-safety-note">
+      <div class="profile-safety-note-title" data-t='{"sr":"Privatnost i sigurnost","en":"Privacy & safety"}'>Privatnost i sigurnost</div>
+      <div class="profile-safety-note-copy" data-t='{"sr":"Drugi vide samo okvirni grad. Ne prikazujemo preciznu adresu ni live lokaciju, a poruke i korisnike možeš da prijaviš ili blokiraš kada god zatreba.","en":"Others only see your approximate city. We do not show your exact address or live location, and you can report or block messages and users whenever needed."}'>Drugi vide samo okvirni grad. Ne prikazujemo preciznu adresu ni live lokaciju, a poruke i korisnike možeš da prijaviš ili blokiraš kada god zatreba.</div>
+    </div>
+  </div>
+
+  <div class="prof-tabs">
+    <div class="ptab active" id="profile-events-tab" onclick="switchPTab(this,'pt1')" data-t='{"sr":"Moji događaji","en":"My events"}'>Moji događaji</div>
+    <div class="ptab" onclick="switchPTab(this,'pt3')" data-t='{"sr":"Ljudi koje pratim","en":"People I follow"}'>Ljudi koje pratim</div>
+    <div class="ptab" id="profile-plans-tab" onclick="switchPTab(this,'pt4')" data-t='{"sr":"Moji pozivi na druženje","en":"My meetup invites"}'>Moji pozivi na druženje</div>
+    <div class="ptab" onclick="switchPTab(this,'pt5')" data-t='{"sr":"Sačuvani događaji","en":"Saved events"}'>Sačuvani događaji</div>
+  </div>
+  <div class="ptab-pane active" id="pt1">
+    <div id="profile-created-events"></div>
+  </div>
+  <div class="ptab-pane" id="pt3">
+    <div style="display:grid;gap:10px;margin-bottom:14px">
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="font-size:12px;font-weight:700;color:var(--ink3);letter-spacing:.04em;text-transform:uppercase" data-t='{"sr":"Pretraži profile","en":"Search profiles"}'>Pretraži profile</div>
+        <div style="position:relative">
+          <span aria-hidden="true" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--ink4)">🔎</span>
+          <input
+            class="form-input"
+            type="search"
+            id="profile-people-search"
+            name="profile-search"
+            placeholder="Ime, @username ili kod profila"
+            data-t-ph='{"sr":"Ime, @username ili kod profila","en":"Name, @username, or profile code"}'
+            oninput="filterProfileDirectory(this.value)"
+            autocomplete="off"
+            autocapitalize="none"
+            autocorrect="off"
+            spellcheck="false"
+            style="padding-left:40px"
+          >
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="pill active" type="button" data-people-mode="all" onclick="setProfileDirectoryMode('all', this)" data-t='{"sr":"Svi","en":"All"}'>Svi</button>
+        <button class="pill" type="button" data-people-mode="following" onclick="setProfileDirectoryMode('following', this)" data-t='{"sr":"Pratim","en":"Following"}'>Pratim</button>
+      </div>
+      <div style="font-size:12px;color:var(--ink4)" data-t='{"sr":"Unesi ime, @username ili kod profila da filtriraš listu.","en":"Type a name, @username, or profile code to filter the list."}'>Unesi ime, @username ili kod profila da filtriraš listu.</div>
+    </div>
+    <div id="profile-following-list"></div>
+    <div style="margin-top:14px">
+      <div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink4);margin:2px 0 10px" data-t='{"sr":"Organizatori koje pratiš","en":"Organizers you follow"}'>Organizatori koje pratiš</div>
+      <div id="profile-following-organizers"></div>
+    </div>
+  </div>
+  <div class="ptab-pane" id="pt4">
+    <div style="font-size:12px;color:var(--ink4);margin-bottom:12px" data-t='{"sr":"Tvoji planovi sa društvom","en":"Your plans with company"}'>Tvoji planovi sa društvom</div>
+    <div id="profile-my-plans"></div>
+  </div>
+  <div class="ptab-pane" id="pt5">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <div style="font-size:12px;color:var(--ink4)" data-t='{"sr":"Događaji koje pratiš","en":"Events you follow"}'>Događaji koje pratiš</div>
+      <span class="tag tag-outline" id="saved-events-count">0</span>
+    </div>
+    <div id="saved-events-list"></div>
+  </div>
+</div>
