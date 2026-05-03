@@ -1,0 +1,72 @@
+  <div class="ev-hero ev-img-a" id="event-hero">
+    <div class="ev-back" onclick="navBack()">←</div>
+  </div>
+  <div class="ev-detail">
+    <div style="display:flex;align-items:start;justify-content:space-between;margin-bottom:8px">
+      <span class="tag tag-purple" id="event-category">🎫 Događaj</span>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-outline btn-sm" id="event-edit-btn" style="display:none" onclick="openCreateEvent(_currentEventId || null)">Uredi</button>
+        <button class="btn btn-danger btn-sm" id="event-admin-hide-btn" style="display:none">Sakrij</button>
+        <button class="btn btn-ghost btn-sm" id="event-save-btn">♡ <span data-t='{"sr":"Sačuvaj","en":"Save"}'>Sačuvaj</span></button>
+      </div>
+    </div>
+    <h1 class="ev-big-title" id="event-title">Događaj</h1>
+    <div class="event-tag-row" id="event-tags" style="display:none;margin-top:0;margin-bottom:14px"></div>
+    <div class="ev-info-cluster">
+      <div class="ev-info-line ev-info-primary" id="event-primary-meta">Petak, 12. april u 21:00</div>
+      <div class="ev-info-line ev-info-location" id="event-location-wrap" style="cursor:default">
+        <span id="event-location">Cetinjska 15, Beograd</span>
+      </div>
+      <div class="ev-info-line" id="event-ticket-price-wrap" style="display:none">
+        <span id="event-ticket-price">Cena ulaznice nije upisana</span>
+      </div>
+      <div class="ev-info-line ev-info-status" id="event-status-summary">Broj mesta nije ograničen</div>
+    </div>
+    <div id="event-rating-summary" class="prof-rating" style="display:none;justify-content:flex-start;margin-top:-4px;margin-bottom:14px">
+      <span class="star">★</span>
+      <span id="event-rating-badge" style="font-size:15px;font-weight:800;color:var(--ink)">0.0</span>
+      <span id="event-rating-count" style="font-size:13px;color:var(--ink3)">0 ocena</span>
+    </div>
+    <div id="event-admin-orphan-note" class="card" style="display:none;padding:14px 16px;margin-bottom:14px;background:linear-gradient(135deg,#fffaf2 0%,#fff 100%);border:1px solid rgba(186,108,23,.14)">
+      <div style="font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--warning);margin-bottom:6px">Admin napomena</div>
+      <div id="event-admin-orphan-copy" style="font-size:13px;color:var(--ink3);line-height:1.55;margin-bottom:10px">Ovaj događaj još nije povezan sa organizer profilom.</div>
+      <div id="event-admin-orphan-actions" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+    </div>
+    <div class="ev-sub-title" data-t='{"sr":"O događaju","en":"About the event"}'>O događaju</div>
+    <p id="event-description" style="font-size:14px;color:var(--ink2);line-height:1.65;margin-bottom:14px">Opis događaja još nije dodat.</p>
+    <div class="divider"></div>
+    <div class="ev-sub-title" data-t='{"sr":"Ko traži društvo za ovaj događaj","en":"Who is looking for company for this event"}'>Ko traži društvo za ovaj događaj</div>
+    <div id="event-plans-list" style="margin-bottom:14px">
+      <div class="draft-empty">Još nema javnih planova za ovaj događaj.</div>
+    </div>
+    <div class="divider"></div>
+    <div class="ev-sub-title" data-t='{"sr":"Prijave","en":"Attendance"}'>Prijave</div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+      <span style="font-size:14px;color:var(--ink2)" data-t='{"sr":"Prijavljenih","en":"Registered"}'>Prijavljenih</span>
+      <span id="event-capacity" style="font-size:14px;font-weight:700;color:var(--ink)">—</span>
+    </div>
+    <div class="cap-bar"><div class="cap-fill" id="event-capacity-fill" style="width:0%"></div></div>
+    <p id="event-capacity-left" style="font-size:12px;color:var(--purple);margin-top:4px" data-t='{"sr":"Broj mesta nije ograničen","en":"Spots are not limited"}'>Broj mesta nije ograničen</p>
+    <div class="divider"></div>
+    <!-- Foto galerija -->
+    <div id="ev-photo-section" style="margin-bottom:14px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div class="ev-sub-title" style="margin-bottom:0" data-t='{"sr":"Fotografije","en":"Photos"}'>Fotografije</div>
+        <button id="ev-photo-add-btn" onclick="document.getElementById('ev-photo-input').click()" style="background:var(--purple-bg);color:var(--purple3);border:none;border-radius:20px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:4px">
+          📷 Dodaj foto
+        </button>
+        <input type="file" id="ev-photo-input" accept="image/*" multiple style="display:none" onchange="handleEventPhotos(this)">
+      </div>
+      <div id="ev-photo-manage-copy" style="font-size:12px;color:var(--ink4);margin-bottom:8px">Najviše 3 dodatne slike po događaju. Velike slike se automatski smanjuju pre uploada.</div>
+      <div id="ev-photo-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;min-height:0">
+        <!-- placeholder kad nema slika -->
+        <div id="ev-photo-empty" style="grid-column:1/-1;text-align:center;padding:20px;color:var(--ink4);font-size:13px;background:var(--bg);border-radius:10px;border:1.5px dashed var(--border2)">
+          Još nema fotografija za ovaj događaj.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ev-bar-foot" style="flex-direction:column;gap:8px">
+    <button class="btn btn-purple btn-full" id="event-social-btn" data-t='{"sr":"Tražim društvo za ovaj događaj","en":"Find company for this event"}'>Tražim društvo za ovaj događaj</button>
+    <button class="btn btn-outline btn-full" id="event-chat-btn" data-t='{"sr":"Grupni chat događaja","en":"Event group chat"}'>Grupni chat događaja</button>
+  </div>
