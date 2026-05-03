@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Svita — Tražiš društvo za koncert, kafu, šetnju?</title>
+<meta name="description" content="Svita pomaže da pronađeš događaj u gradu, sačuvaš plan i nađeš društvo za koncert, kafu, šetnju, izložbu, sport ili izlazak.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#B24A32">
+<meta property="og:title" content="Svita — Tražiš društvo za koncert, kafu, šetnju?">
+<meta property="og:description" content="Svita pomaže da pronađeš događaj u gradu, sačuvaš plan i nađeš društvo za koncert, kafu, šetnju, izložbu, sport ili izlazak.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="svita">
+<meta property="og:locale" content="sr_RS">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Svita — Tražiš društvo za koncert, kafu, šetnju?">
+<meta name="twitter:description" content="Svita pomaže da pronađeš događaj u gradu, sačuvaš plan i nađeš društvo za koncert, kafu, šetnju, izložbu, sport ili izlazak.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Svita">
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=DM+Serif+Display:ital@1&display=swap&font-display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/styles/tokens.css">
+<link rel="stylesheet" href="/assets/styles/components.css">
+<link rel="stylesheet" href="/assets/styles/base.css">
+<link rel="stylesheet" href="/assets/styles/pages.css">
+<script>
+  (function bootstrapSvitaGlobals() {
+    const g = window;
+    if (!Array.isArray(g.EVENT_DATA)) g.EVENT_DATA = [];
+    if (!Array.isArray(g.REAL_EVENT_DATA)) g.REAL_EVENT_DATA = [];
+    if (!Array.isArray(g.ADMIN_ORGANIZERS)) g.ADMIN_ORGANIZERS = [];
+    if (!Array.isArray(g.EVENT_DRAFTS)) g.EVENT_DRAFTS = [];
+    if (!Array.isArray(g.FOLLOWED_EVENTS)) g.FOLLOWED_EVENTS = [];
+    if (!Array.isArray(g.BROWSE_PLAN_DATA)) g.BROWSE_PLAN_DATA = [];
+    if (!Array.isArray(g.PROFILE_DIRECTORY)) g.PROFILE_DIRECTORY = [];
+    if (!Array.isArray(g.FOLLOWED_PROFILE_IDS)) g.FOLLOWED_PROFILE_IDS = [];
+    if (!Array.isArray(g.BLOCKED_PROFILE_IDS)) g.BLOCKED_PROFILE_IDS = [];
+    if (!Array.isArray(g.ADMIN_CLAIM_REQUESTS)) g.ADMIN_CLAIM_REQUESTS = [];
+    if (!Array.isArray(g.ADMIN_MODERATION_ITEMS)) g.ADMIN_MODERATION_ITEMS = [];
+    if (!Array.isArray(g.ADMIN_PLAN_SIGNALS)) g.ADMIN_PLAN_SIGNALS = [];
+    if (!Array.isArray(g.ADMIN_ORPHAN_EVENTS)) g.ADMIN_ORPHAN_EVENTS = [];
+    if (typeof g._createOrganizerQueryValue !== 'function') {
+      g._createOrganizerQueryValue = function () {
+        return String(document.getElementById('create-organizer')?.value || '').trim();
+      };
+    }
+    if (typeof g.renderMyCreatedEvents !== 'function') {
+      g.renderMyCreatedEvents = function () {};
+    }
+  })();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js" defer></script>
+<script src="/assets/scripts/core/runtime.js" defer></script>
+<script src="/assets/scripts/auth/session.js" defer></script>
+<script src="/assets/scripts/api/supabase.js" defer></script>
+<script src="/assets/scripts/api/storage.js" defer></script>
+<script src="/assets/scripts/events/events-core.js" defer></script>
+<script src="/assets/scripts/events/events-store.js" defer></script>
+<script src="/assets/scripts/events/events-data.js" defer></script>
+<script src="/assets/scripts/events/events-browse.js" defer></script>
+<script src="/assets/scripts/events/events-create.js" defer></script>
+<script src="/assets/scripts/events/events-admin-shared.js" defer></script>
+<script src="/assets/scripts/events/events-admin-drafts.js" defer></script>
+<script src="/assets/scripts/events/events-admin-organizers.js" defer></script>
+<script src="/assets/scripts/events/events-admin-moderation.js" defer></script>
+<script src="/assets/scripts/events/events-saved.js" defer></script>
+<script src="/assets/scripts/domains/events.js" defer></script>
+<script src="/assets/scripts/domains/profiles-public.js" defer></script>
+<script src="/assets/scripts/domains/settings.js" defer></script>
+<script src="/assets/scripts/domains/profile-account.js" defer></script>
+<script src="/assets/scripts/domains/venues-organizers.js" defer></script>
+<script src="/assets/scripts/domains/reviews.js" defer></script>
+<script src="/assets/scripts/domains/events-create-entry.js" defer></script>
+<script src="/assets/scripts/domains/events-social.js" defer></script>
+<script src="/assets/scripts/domains/events-detail.js" defer></script>
+<script src="/assets/scripts/domains/chat-data.js" defer></script>
+<script src="/assets/scripts/domains/chat.js" defer></script>
+<script src="/assets/scripts/domains/chat-pair-plans.js" defer></script>
+<script src="/assets/scripts/domains/discovery.js" defer></script>
+<script src="/assets/scripts/domains/notifications.js" defer></script>
+<script src="/assets/scripts/domains/integrations.js" defer></script>
+<script src="/assets/scripts/bootstrap/init.js" defer></script>
+<script src="/assets/scripts/bootstrap/admin-init.js" defer></script>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     LANDING
+══════════════════════════════════════════ -->
+<div class="page active" id="page-landing">
+
+<!-- Toast container -->
+<div id="toast-container"></div>
+
+<!-- NAV -->
+<nav class="land-nav">
+  <div class="land-nav-inner">
+    <div class="land-logo"><img src="/slike/logo.png" alt="Svita" style="height:52px;width:auto;display:block"></div>
+    <div class="land-nav-right">
+      <div class="lang-sw">
+      <div class="lbtn active" data-lang-btn="sr" onclick="setLang('sr',this)">SR</div>
+      <div class="lbtn" data-lang-btn="en" onclick="setLang('en',this)">EN</div>
+      </div>
+      <button id="landing-login-btn" class="btn btn-outline btn-sm" onclick="safeLandingNav('login')" data-t='{"sr":"Prijavi se","en":"Log in"}'>Prijavi se</button>
+      <button class="btn btn-outline btn-sm" onclick="openOrganizerRegister()" data-t='{"sr":"Za organizatore događaja","en":"For event organizers"}'>Za organizatore događaja</button>
+      <button id="landing-register-btn" class="btn btn-purple btn-sm" onclick="safeLandingNav('register')" data-t='{"sr":"Kreiraj nalog","en":"Sign up"}'>Kreiraj nalog</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">
+    <span class="hero-dot"></span>
+    <span data-t='{"sr":"Stotine događaja. Jedan grad. Ti.","en":"Hundreds of events. One city. You."}'>Stotine događaja. Jedan grad. Ti.</span>
+  </div>
+  <h1 data-t-html='{"sr":"Dobar plan je bolji uz dobru ekipu.","en":"A good plan is better with great company."}'>Dobar plan je bolji uz dobru ekipu.</h1>
+  <p class="hero-sub" data-t='{"sr":"Pronađi događaj, objavi poziv i vidi ko je za. Nađi svoju svitu.","en":"Find an event, post an invite, and see who&apos;s in. Find your Svita."}'>
+    Pronađi događaj, objavi poziv i vidi ko je za. Nađi svoju svitu.
+  </p>
+  <div class="hero-btns">
+    <button id="landing-hero-start-btn" class="btn btn-primary btn-lg" onclick="safeLandingNav('register')" data-t='{"sr":"Kreni","en":"Get started"}'>Kreni</button>
+    <button id="landing-hero-browse-btn" class="btn btn-outline btn-lg" onclick="safeLandingNav('browse')" data-t='{"sr":"Pogledaj događaje","en":"Browse events"}'>Pogledaj događaje</button>
+  </div>
+  <p class="hero-note" onclick="nav('browse')" data-t='{"sr":"Prvo samo razgledaj šta se dešava →","en":"Just look around first →"}'>Prvo samo razgledaj šta se dešava →</p>
+</div>
+
+<div class="hero-discovery">
+  <!-- Kategorije -->
+  <div class="hero-cats-wrap">
+    <div class="hero-cats-label" data-t='{"sr":"Šta te zanima?","en":"What are you into?"}'>Šta te zanima?</div>
+    <div class="hero-cats-grid">
+      <button type="button" class="hero-cat-card music" onclick="nav('browse')">
+        <div class="hero-cat-symbol">
+          <span class="hero-cat-icon" aria-hidden="true">♪</span>
+        </div>
+        <div class="hero-cat-bottom">
+          <div class="hero-cat-name" data-t='{"sr":"Muzika","en":"Music"}'>Muzika</div>
+          <div class="hero-cat-copy" data-t='{"sr":"Koncerti, DJ večeri i svirke","en":"Concerts, DJ nights and live shows"}'>Koncerti, DJ večeri i svirke</div>
+        </div>
+      </button>
+      <button type="button" class="hero-cat-card sport" onclick="nav('browse')">
+        <div class="hero-cat-symbol">
+          <span class="hero-cat-icon" aria-hidden="true">⚽</span>
+        </div>
+        <div class="hero-cat-bottom">
+          <div class="hero-cat-name" data-t='{"sr":"Sport","en":"Sport"}'>Sport</div>
+          <div class="hero-cat-copy" data-t='{"sr":"Mečevi, trening i rekreacija","en":"Matches, training and recreation"}'>Mečevi, trening i rekreacija</div>
+        </div>
+      </button>
+      <button type="button" class="hero-cat-card culture" onclick="nav('browse')">
+        <div class="hero-cat-symbol">
+          <span class="hero-cat-icon" aria-hidden="true">🎭</span>
+        </div>
+        <div class="hero-cat-bottom">
+          <div class="hero-cat-name" data-t='{"sr":"Kultura","en":"Culture"}'>Kultura</div>
+          <div class="hero-cat-copy" data-t='{"sr":"Izložbe, film i predstave","en":"Exhibitions, film and theatre"}'>Izložbe, film i predstave</div>
+        </div>
+      </button>
+      <button type="button" class="hero-cat-card social" onclick="nav('browse')">
+        <div class="hero-cat-symbol">
+          <span class="hero-cat-icon" aria-hidden="true">☕</span>
+        </div>
+        <div class="hero-cat-bottom">
+          <div class="hero-cat-name" data-t='{"sr":"Izlasci","en":"Social"}'>Izlasci</div>
+          <div class="hero-cat-copy" data-t='{"sr":"Kafa, barovi i spontani planovi","en":"Coffee, bars and spontaneous plans"}'>Kafa, barovi i spontani planovi</div>
+        </div>
+      </button>
+      <button type="button" class="hero-cat-card nature" onclick="nav('browse')">
+        <div class="hero-cat-symbol">
+          <span class="hero-cat-icon" aria-hidden="true">🏕️</span>
+        </div>
+        <div class="hero-cat-bottom">
+          <div class="hero-cat-name" data-t='{"sr":"Priroda","en":"Outdoors"}'>Priroda</div>
+          <div class="hero-cat-copy" data-t='{"sr":"Šetnje, izleti i beg iz grada","en":"Walks, day trips and outdoors"}'>Šetnje, izleti i beg iz grada</div>
+        </div>
+      </button>
+      <button type="button" class="hero-cat-card food" onclick="nav('browse')">
+        <div class="hero-cat-symbol">
+          <span class="hero-cat-icon" aria-hidden="true">🍽️</span>
+        </div>
+        <div class="hero-cat-bottom">
+          <div class="hero-cat-name" data-t='{"sr":"Hrana","en":"Food"}'>Hrana</div>
+          <div class="hero-cat-copy" data-t='{"sr":"Večere, brunch i wine spots","en":"Dinner, brunch and wine spots"}'>Večere, brunch i wine spots</div>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mini event kartice -->
+  <div id="landing-hero-events">
+    <div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:12px" data-t='{"sr":"Događaji u blizini","en":"Events nearby"}'>Događaji u blizini</div>
+    <div class="hero-cards" id="landing-hero-cards"></div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<div class="land-section" id="landing-about">
+  <div class="land-eyebrow" data-t='{"sr":"Ovo si ti, zar ne?","en":"This is you, right?"}'>Ovo si ti, zar ne?</div>
+  <div class="prob-list">
+    <div class="prob-row">
+      <div class="prob-n">01</div>
+      <div class="prob-txt" data-t-html='{"sr":"Omiljeni bend dolazi. <s>Ulaznica propada.</s>","en":"Your favourite band is here. <s>Ticket goes to waste.</s>"}'>Omiljeni bend dolazi. <s>Ulaznica propada.</s></div>
+    </div>
+    <div class="prob-row">
+      <div class="prob-n">02</div>
+      <div class="prob-txt" data-t-html='{"sr":"Izložba se zatvara. <s>Niko nema vremena.</s>","en":"Exhibition closes soon. <s>Nobody has time.</s>"}'>Izložba se zatvara. <s>Niko nema vremena.</s></div>
+    </div>
+    <div class="prob-row">
+      <div class="prob-n">03</div>
+      <div class="prob-txt" data-t-html='{"sr":"Sunčana nedelja. <s>Svi zauzeti.</s>","en":"Perfect Sunday. <s>Everyone&apos;s busy.</s>"}'>Sunčana nedelja. <s>Svi zauzeti.</s></div>
+    </div>
+    <div class="prob-row" style="border-bottom:none">
+      <div class="prob-n">✓</div>
+      <div class="prob-txt prob-resolve" data-t='{"sr":"Zato je tu Svita.","en":"That&apos;s why Svita exists."}'>Zato je tu Svita.</div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="land-section-dark" id="landing-how">
+  <div class="land-inner">
+    <div class="land-eyebrow light" data-t='{"sr":"Tri koraka do večerašnjeg izlaska","en":"Three steps to tonight"}'>Tri koraka do večerašnjeg izlaska</div>
+    <div>
+      <div class="how-step">
+        <div class="how-n">1</div>
+        <div>
+          <div class="how-title" data-t='{"sr":"Pregledaj događaje","en":"Browse events"}'>Pregledaj događaje</div>
+          <div class="how-desc" data-t='{"sr":"Svi događaji vidljivi bez prijave. Koncerti, izložbe, sport, kafa. Filtriraj po gradu, datumu, kategoriji.","en":"All events visible without signing up. Concerts, exhibitions, sports, coffee. Filter by city, date, category."}'>Svi događaji vidljivi bez prijave. Koncerti, izložbe, sport, kafa. Filtriraj po gradu, datumu, kategoriji.</div>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="how-n">2</div>
+        <div>
+          <div class="how-title" data-t='{"sr":"Nađi društvo","en":"Find your people"}'>Nađi društvo</div>
+          <div class="how-desc" data-t='{"sr":"Nađeš nešto — prijaviš se. Ili objaviš svoj plan za društvo. Ti biraš koliko mesta i ko ulazi.","en":"Found something — join it. Or post your own plan for company. You decide how many spots and who gets in."}'>Nađeš nešto — prijaviš se. Ili objaviš svoj plan za društvo. Ti biraš koliko mesta i ko ulazi.</div>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="how-n">3</div>
+        <div>
+          <div class="how-title" data-t='{"sr":"Dogovorite se i idite","en":"Arrange and go"}'>Dogovorite se i idite</div>
+          <div class="how-desc" data-t='{"sr":"Prvo se dogovorite oko plana, a posle po potrebi nastavite u porukama. Sve ostaje vezano za isti događaj.","en":"First agree on the plan, then continue in messages if needed. Everything stays tied to the same event."}'>Prvo se dogovorite oko plana, a posle po potrebi nastavite u porukama. Sve ostaje vezano za isti događaj.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHO IT'S FOR -->
+<div class="land-section" style="padding-top:40px;padding-bottom:40px">
+  <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+    <div style="background:var(--ink);color:#fff;border-radius:14px;padding:14px 20px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px">
+      <span>👤</span> <span data-t='{"sr":"Za ljude koji traže društvo","en":"For people seeking company"}'>Za ljude koji traže društvo</span>
+    </div>
+    <div style="background:var(--purple-bg);border:1px solid var(--purple-br);border-radius:14px;padding:14px 20px;font-size:14px;font-weight:700;color:var(--purple3);display:flex;align-items:center;gap:8px">
+      <span>🏛️</span> <span data-t='{"sr":"Za organizatore događaja","en":"For event organizers"}'>Za organizatore događaja</span>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="land-cta">
+  <div class="land-cta-bg" aria-hidden="true">Svita</div>
+  <h2 data-t-html='{"sr":"Izlazi ti se,<br>a nemaš s kim?<br><em>Tu smo mi.</em>","en":"You feel like going out<br>but everyone is busy?<br><em>We&apos;ve got you.</em>"}'>Izlazi ti se,<br>a nemaš s kim?<br><em>Tu smo mi.</em></h2>
+  <p data-t='{"sr":"Brzo. Jednostavno. Pravo društvo za pravi događaj.","en":"Fast. Easy. The right people for the right event."}'>Brzo. Jednostavno. Pravo društvo za pravi događaj.</p>
+  <div class="land-cta-btns">
+    <button class="btn btn-white btn-lg" onclick="nav('register')" data-t='{"sr":"Kreiraj nalog","en":"Sign up free"}'>Kreiraj nalog</button>
+    <button class="btn btn-w-out btn-lg" onclick="nav('browse')" data-t='{"sr":"Pregledaj događaje","en":"Browse events"}'>Pregledaj događaje</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="land-footer">
+  <div class="lf-inner">
+    <div class="lf-top">
+      <div class="lf-logo"><img src="/slike/logo za tamnu pozadinu.png" alt="Svita" style="height:28px;width:auto;display:block"></div>
+      <ul class="lf-links">
+        <li><a onclick="scrollLandingSection('landing-about')" style="cursor:pointer" data-t='{"sr":"O nama","en":"About"}'>O nama</a></li>
+        <li><a onclick="scrollLandingSection('landing-how')" style="cursor:pointer" data-t='{"sr":"Kako radi","en":"How it works"}'>Kako radi</a></li>
+        <li><a onclick="nav('browse')" style="cursor:pointer" data-t='{"sr":"Događaji","en":"Events"}'>Događaji</a></li>
+        <li><a onclick="nav('terms')" style="cursor:pointer" data-t='{"sr":"Uslovi","en":"Terms"}'>Uslovi</a></li>
+        <li><a onclick="nav('privacy')" style="cursor:pointer" data-t='{"sr":"Privatnost","en":"Privacy"}'>Privatnost</a></li>
+      </ul>
+    </div>
+    <div class="lf-bot">
+      <span class="lf-copy">© 2025–2026 svita</span>
+      <span class="age-badge">18+</span>
+    </div>
+  </div>
+</div>
+
+</div><!-- end page-landing -->
+
+<!-- ══════════════════════════════════════════
+     LOGIN
+══════════════════════════════════════════ -->
+<div class="page" id="page-login">
+  <div class="auth-wrap">
+    <div class="auth-box">
+      <div style="text-align:center;margin-bottom:28px">
+        <div class="land-logo" style="display:inline-block;cursor:pointer" onclick="nav('landing')">mit<em>mi</em></div>
+      </div>
+      <h2 class="auth-title" data-t='{"sr":"Prijavi se","en":"Welcome back"}'>Prijavi se</h2>
+      <p class="auth-sub" data-t='{"sr":"Uloguj se na svoj nalog","en":"Log in to your account"}'>Uloguj se na svoj nalog</p>
+      <div id="login-auth-notice" style="display:none;margin:0 0 14px;padding:12px 14px;border:1px solid;border-radius:12px;font-size:13px;line-height:1.5"></div>
+      <div class="form-group">
+        <label class="form-label" for="login-email">Email</label>
+        <input class="form-input" type="email" id="login-email" placeholder="tvoj@email.com" onkeydown="if(event.key==='Enter'){ handleLogin(); }">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="login-pass" data-t='{"sr":"Lozinka","en":"Password"}'>Lozinka</label>
+        <input class="form-input" type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter'){ handleLogin(); }">
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-4px 0 18px;padding:10px 12px;border:1px solid var(--border);border-radius:14px;background:rgba(255,255,255,.76)">
+        <div style="font-size:12px;color:var(--ink3);line-height:1.45" data-t='{"sr":"Ako ne možeš da se prijaviš, pošalji link za reset na svoj email.","en":"If you can't log in, send a reset link to your email."}'>Ako ne možeš da se prijaviš, pošalji link za reset na svoj email.</div>
+        <button type="button" class="btn btn-ghost btn-sm" style="white-space:nowrap" onclick="handleForgotPassword()" data-t='{"sr":"Zaboravljena lozinka","en":"Forgot password"}'>Zaboravljena lozinka</button>
+      </div>
+      <button id="login-submit-btn" type="button" class="btn btn-primary btn-full" onclick="handleLogin()" data-t='{"sr":"Prijavi se","en":"Log in"}'>Prijavi se</button>
+      <button id="login-email-link-btn" type="button" class="btn btn-outline btn-full" style="margin-top:10px" onclick="handleEmailMagicLogin()" data-t='{"sr":"Pošalji link za prijavu emailom","en":"Send email sign-in link"}'>Pošalji link za prijavu emailom</button>
+      <div class="auth-footer" data-t-html='{"sr":"Nemaš nalog? <a onclick=\"nav(&apos;register&apos;)\">Kreiraj nalog</a>","en":"No account? <a onclick=\"nav(&apos;register&apos;)\">Sign up</a>"}'>
+        Nemaš nalog? <a onclick="nav('register')">Kreiraj nalog</a>
+      </div>
+      <div style="text-align:center;margin-top:10px">
+        <a style="font-size:13px;color:var(--ink4);cursor:pointer" onclick="nav('landing')" data-t='{"sr":"← Nazad","en":"← Back"}'>← Nazad</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     REGISTER
+══════════════════════════════════════════ -->
+<div class="page" id="page-register" data-lazy-page="true" data-lazy-src="/pages/page-register.html">
+  <div class="page-loading" data-t='{"sr":"Učitavanje...","en":"Loading..."}'>Učitavanje...</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     BROWSE
+══════════════════════════════════════════ -->
+
+<!-- ══════════════════════════════════════════
+     VENUE ONBOARDING — 3 koraka za lokal
+══════════════════════════════════════════ -->
+<div class="page" id="page-venue-onboarding" data-lazy-page="true" data-lazy-src="/pages/page-venue-onboarding.html">
+  <div class="page-loading" data-t='{"sr":"Učitavanje...","en":"Loading..."}'>Učitavanje...</div>
+</div>
+
+<div class="page" id="page-onboarding" data-lazy-page="true" data-lazy-src="/pages/page-onboarding.html">
+  <div class="page-loading" data-t='{"sr":"Učitavanje...","en":"Loading..."}'>Učitavanje...</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     HOME
+══════════════════════════════════════════ -->
+<div class="page" id="page-home-legacy" style="display:none!important" aria-hidden="true">
+  <div class="home-top" style="left:0!important;right:0!important;transform:none!important;width:100%!important">
+    <div class="home-row1">
+      <div class="home-logo" style="display:flex;align-items:center"><img src="/slike/logo.png" alt="Svita" style="height:52px;width:auto;display:block"></div>
+      <div class="home-icons">
+        <div class="city-btn" onclick="showCityPicker()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          <span id="city-label" data-t='{"sr":"Srbija","en":"Serbia"}'>Srbija</span>
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <button class="btn btn-icon btn-ghost" onclick="openUnifiedHub('events',0)">🔍</button>
+        <button class="btn btn-icon btn-ghost notif-btn" onclick="nav('notif')">🔔<span class="notif-dot-btn"></span></button>
+      </div>
+    </div>
+    <div class="home-tabs">
+      <div class="h-tab active" onclick="switchTab(this,'tab-events')" data-t='{"sr":"Događaji","en":"Events"}'>Događaji</div>
+      <div class="h-tab" onclick="openBrowseMode('venues')" data-t='{"sr":"Organizatori","en":"Organizers"}'>Organizatori</div>
+    </div>
+  </div>
+
+  <!-- TAB: EVENTS -->
+  <div class="tab-content active" id="tab-events">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0 0">
+      <div style="display:flex;align-items:center;gap:6px">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        <span id="home-city-display" style="font-size:13px;font-weight:700;color:var(--purple)">Srbija</span>
+      </div>
+      <button onclick="showCityPicker()" style="font-size:12px;color:var(--ink4);background:none;border:none;cursor:pointer;font-family:inherit" data-t='{"sr":"Promeni grad","en":"Change city"}'>Promeni grad</button>
+    </div>
+
+    <!-- Uskoro — dinamično, sortira po data-date -->
+    <div style="padding-top:12px">
+      <div class="section-label" style="margin-bottom:10px">
+        <span data-t='{"sr":"⚡ Uskoro","en":"⚡ Coming up"}'>⚡ Uskoro</span>
+        <a onclick="openUnifiedHub('events',0)" data-t='{"sr":"Vidi sve","en":"See all"}'>Vidi sve</a>
+      </div>
+      <div id="uskoro-strip" style="display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:4px 16px 12px">
+        <!-- JS popunjava -->
+      </div>
+    </div>
+
+    <div class="section-label">
+      <span data-t='{"sr":"Svi događaji","en":"All events"}'>Svi događaji</span>
+      <a onclick="openUnifiedHub('events',0)" data-t='{"sr":"Vidi sve","en":"See all"}'>Vidi sve</a>
+    </div>
+    <div class="pills" style="margin-bottom:14px">
+      <div class="pill active" onclick="setPill(this,'all')" data-t='{"sr":"Sve","en":"All"}'>Sve</div>
+      <div class="pill" onclick="setPill(this,'muzika')">🎵</div>
+      <div class="pill" onclick="setPill(this,'sport')">⚽</div>
+      <div class="pill" onclick="setPill(this,'kultura')">🎨</div>
+      <div class="pill" onclick="setPill(this,'kafa')">☕</div>
+      <div class="pill" onclick="setPill(this,'drugo')" data-t='{"sr":"✨ Drugo","en":"✨ Other"}'>✨</div>
+      <div class="pill" onclick="setPill(this,'danas')" data-t='{"sr":"Danas","en":"Today"}'>Danas</div>
+    </div>
+    <div class="draft-empty">Događaji se sada pune iz stvarnih podataka aplikacije.</div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════
+     BROWSE
+══════════════════════════════════════════ -->
+<div class="page" id="page-browse" data-lazy-page="true" data-lazy-src="/pages/page-browse.html">
+  <div class="page-loading" data-t='{"sr":"Učitavanje...","en":"Loading..."}'>Učitavanje...</div>
+</div>
+
+<div class="page" id="page-event" data-lazy-page="true" data-lazy-src="/pages/page-event.html">
+  <div class="page-loading" data-t='{"sr":"Učitavanje...","en":"Loading..."}'>Učitavanje...</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     CREATE INVITE
+══════════════════════════════════════════ -->
+<div class="page" id="page-create" data-lazy-page="true" data-lazy-src="/pages/page-create.html">
+  <div class="page-loading" data-t='{"sr":"Učitavanje...","en":"Loading..."}'>Učitavanje...</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     CHAT LIST
+══════════════════════════════════════════ -->
+<div class="page" id="page-chats">
+  <div class="app-bar app-bar-centered">
+    <button class="btn btn-icon btn-ghost" onclick="navBack()" style="border-radius:8px">←</button>
+    <div class="app-bar-title" style="text-align:center" data-t='{"sr":"Poruke","en":"Messages"}'>Poruke</div>
+    <div style="width:40px;height:40px;flex-shrink:0" aria-hidden="true"></div>
+  </div>
+  <div id="chats-list"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     CHAT
+══════════════════════════════════════════ -->
+<div class="page" id="page-chat" data-lazy-page="true" data-lazy-src="/pages/page-chat.html">
+  <div class="page-loading" data-t='{"sr":"Učitavanje...","en":"Loading..."}'>Učitavanje...</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PROFILE (own)
+══════════════════════════════════════════ -->
+<div class="page" id="page-profile" data-lazy-page="true" data-lazy-src="/pages/page-profile.html">
+  <div class="page-loading" data-t='{"sr":"Učitavanje...","en":"Loading..."}'>Učitavanje...</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     OTHER PROFILE (public view)
+══════════════════════════════════════════ -->
+<div class="page" id="page-other-profile" data-lazy-page="true" data-lazy-src="/pages/page-other-profile.html">
+  <div class="page-loading" data-t='{"sr":"Učitavanje...","en":"Loading..."}'>Učitavanje...</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     VENUE DASHBOARD
+══════════════════════════════════════════ -->
+<div class="page" id="page-venue" data-lazy-page="true" data-lazy-src="/pages/page-venue.html">
+  <div class="page-loading" data-t='{"sr":"Učitavanje...","en":"Loading..."}'>Učitavanje...</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     NOTIFICATIONS
+══════════════════════════════════════════ -->
+<div class="page" id="page-notif">
+  <div class="app-bar">
+    <button class="btn btn-icon btn-ghost" onclick="navBack()" style="border-radius:8px">←</button>
+    <div class="app-bar-title" data-t='{"sr":"Obaveštenja","en":"Notifications"}'>Obaveštenja</div>
+    <button class="btn btn-ghost btn-sm" onclick="markAllNotificationsRead()" data-t='{"sr":"Sve pročitano","en":"Mark all read"}'>Sve pročitano</button>
+  </div>
+  <div id="notif-list"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SETTINGS
+══════════════════════════════════════════ -->
+<div class="page" id="page-settings" data-lazy-page="true" data-lazy-src="/pages/page-settings.html">
+  <div class="page-loading" data-t='{"sr":"Učitavanje...","en":"Loading..."}'>Učitavanje...</div>
+</div>
+
+<div class="page" id="page-blocked-users" data-lazy-page="true" data-lazy-src="/pages/page-blocked-users.html">
+  <div class="page-loading" data-t='{"sr":"Učitavanje...","en":"Loading..."}'>Učitavanje...</div>
+</div>
+
+<div class="page" id="page-edit-profile" data-lazy-page="true" data-lazy-src="/pages/page-edit-profile.html">
+  <div class="page-loading" data-t='{"sr":"Učitavanje...","en":"Loading..."}'>Učitavanje...</div>
+</div>
+
+<div class="page" id="page-password-security" data-lazy-page="true" data-lazy-src="/pages/page-password-security.html">
+  <div class="page-loading" data-t='{"sr":"Učitavanje...","en":"Loading..."}'>Učitavanje...</div>
+</div>
+
+<div class="page" id="page-edit-venue" data-lazy-page="true" data-lazy-src="/pages/page-edit-venue.html">
+  <div class="page-loading" data-t='{"sr":"Učitavanje...","en":"Loading..."}'>Učitavanje...</div>
+</div>
+
+<div class="page" id="page-admin-moderation" data-lazy-page="true" data-lazy-src="/pages/page-admin-moderation.html">
+  <div class="page-loading" data-t='{"sr":"Učitavanje...","en":"Loading..."}'>Učitavanje...</div>
+</div>
+
+<div class="page" id="page-admin-drafts" data-lazy-page="true" data-lazy-src="/pages/page-admin-drafts.html">
+  <div class="page-loading" data-t='{"sr":"Učitavanje...","en":"Loading..."}'>Učitavanje...</div>
+</div>
+
+<div class="page" id="page-admin-organizers" data-lazy-page="true" data-lazy-src="/pages/page-admin-organizers.html">
+  <div class="page-loading" data-t='{"sr":"Učitavanje...","en":"Loading..."}'>Učitavanje...</div>
+</div>
+
+<div class="page" id="page-venue-profile" aria-hidden="true" data-lazy-page="true" data-lazy-src="/pages/page-venue-profile.html">
+  <div class="page-loading" data-t='{"sr":"Učitavanje...","en":"Loading..."}'>Učitavanje...</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     VENUE PUBLIC PROFILE
+══════════════════════════════════════════ -->
+<div class="page" id="page-venue-public" data-lazy-page="true" data-lazy-src="/pages/page-venue-public.html">
+  <div class="page-loading" data-t='{"sr":"Učitavanje...","en":"Loading..."}'>Učitavanje...</div>
+</div>
+
+<div class="page" id="page-report" data-lazy-page="true" data-lazy-src="/pages/page-report.html">
+  <div class="page-loading" data-t='{"sr":"Učitavanje...","en":"Loading..."}'>Učitavanje...</div>
+</div>
+
+<div class="page" id="page-review" data-lazy-page="true" data-lazy-src="/pages/page-review.html">
+  <div class="page-loading" data-t='{"sr":"Učitavanje...","en":"Loading..."}'>Učitavanje...</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     BOTTOM NAV
+══════════════════════════════════════════ -->
+<nav class="bottom-nav" id="bottom-nav">
+  <div class="bn-item active" onclick="openUnifiedHub('events',0)" id="bn0">
+    <svg class="bn-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <span class="bn-label" data-t='{"sr":"Istraži","en":"Explore"}'>Istraži</span>
+  </div>
+  <div class="bn-item has-badge" onclick="nav('notif');setBN(1)" id="bn1">
+    <svg class="bn-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 10-12 0v3.2a2 2 0 01-.6 1.4L4 17h5"/><path d="M10 17a2 2 0 004 0"/></svg>
+    <span class="bn-label" data-t='{"sr":"Novosti","en":"Updates"}'>Novosti</span>
+  </div>
+  <div class="bn-item bn-create" onclick="openCreateEntryMenu()" id="bn2">
+    <div class="bn-plus-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </div>
+    <span class="bn-label" data-t='{"sr":"Pozivi","en":"Invites"}'>Pozivi</span>
+  </div>
+  <div class="bn-item" onclick="nav('chats');setBN(3)" id="bn3">
+    <svg class="bn-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="bn-label" data-t='{"sr":"Poruke","en":"Messages"}'>Poruke</span>
+  </div>
+  <div class="bn-item" onclick="nav('profile');setBN(4)" id="bn4">
+    <svg class="bn-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span class="bn-label" data-t='{"sr":"Profil","en":"Profile"}'>Profil</span>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════
+     OVERLAYS
+══════════════════════════════════════════ -->
+
+<!-- City picker -->
+<div id="city-picker-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:900;display:none;align-items:flex-end;justify-content:center">
+  <div style="background:var(--white);border-radius:22px 22px 0 0;padding:20px 20px max(20px,env(safe-area-inset-bottom));width:100%;max-width:640px">
+    <div style="width:36px;height:4px;background:var(--bg3);border-radius:2px;margin:0 auto 16px"></div>
+    <div style="font-size:17px;font-weight:700;margin-bottom:16px" data-t='{"sr":"Izaberi grad","en":"Choose city"}'>Izaberi grad</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;max-height:60vh;overflow-y:auto">
+      <div onclick="setCity('Srbija')" style="padding:12px 14px;border:1.5px solid var(--purple-br);background:var(--purple-bg);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s" data-t='{"sr":"🇷🇸 Cela Srbija","en":"🇷🇸 All Serbia"}'>🇷🇸 Cela Srbija</div>
+      <div onclick="setCity('Novi Sad')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Novi Sad</div>
+      <div onclick="setCity('Beograd')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Beograd</div>
+      <div onclick="setCity('Niš')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Niš</div>
+      <div onclick="setCity('Kragujevac')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Kragujevac</div>
+      <div onclick="setCity('Subotica')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Subotica</div>
+      <div onclick="setCity('Zrenjanin')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Zrenjanin</div>
+      <div onclick="setCity('Pančevo')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Pančevo</div>
+      <div onclick="setCity('Čačak')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Čačak</div>
+      <div onclick="setCity('Novi Pazar')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Novi Pazar</div>
+      <div onclick="setCity('Smederevo')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Smederevo</div>
+      <div onclick="setCity('Kruševac')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Kruševac</div>
+      <div onclick="setCity('Valjevo')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Valjevo</div>
+      <div onclick="setCity('Šabac')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Šabac</div>
+      <div onclick="setCity('Užice')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Užice</div>
+      <div onclick="setCity('Vranje')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Vranje</div>
+      <div onclick="setCity('Leskovac')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Leskovac</div>
+      <div onclick="setCity('Kraljevo')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Kraljevo</div>
+      <div onclick="setCity('Požarevac')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Požarevac</div>
+      <div onclick="setCity('Sremska Mitrovica')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Sremska Mitrovica</div>
+      <div onclick="setCity('Jagodina')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Jagodina</div>
+      <div onclick="setCity('Bor')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Bor</div>
+      <div onclick="setCity('Prokuplje')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Prokuplje</div>
+      <div onclick="setCity('Loznica')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Loznica</div>
+      <div onclick="setCity('Zaječar')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Zaječar</div>
+      <div onclick="setCity('Kikinda')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Kikinda</div>
+      <div onclick="setCity('Pirot')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Pirot</div>
+      <div onclick="setCity('Sombor')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Sombor</div>
+      <div onclick="setCity('Apatin')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Apatin</div>
+      <div onclick="setCity('Ruma')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Ruma</div>
+      <div onclick="setCity('Vrbas')" style="padding:12px 14px;border:1.5px solid var(--border2);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s">📍 Vrbas</div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <input class="form-input form-input-city" id="custom-city-input" list="sr-city-options" placeholder="Počni da kucaš grad" style="flex:1">
+      <button class="btn btn-outline" type="button" onclick="applyCustomCity()">Sačuvaj</button>
+    </div>
+    <button class="btn btn-ghost btn-full" style="margin-top:12px" onclick="hideCityPicker()" data-t='{"sr":"Zatvori","en":"Close"}'>Zatvori</button>
+  </div>
+</div>
+
+<datalist id="sr-city-options">
+  <option value="Srbija"></option>
+  <option value="Novi Sad"></option>
+  <option value="Beograd"></option>
+  <option value="Niš"></option>
+  <option value="Kragujevac"></option>
+  <option value="Subotica"></option>
+  <option value="Zrenjanin"></option>
+  <option value="Pančevo"></option>
+  <option value="Čačak"></option>
+  <option value="Novi Pazar"></option>
+  <option value="Smederevo"></option>
+  <option value="Kruševac"></option>
+  <option value="Valjevo"></option>
+  <option value="Šabac"></option>
+  <option value="Užice"></option>
+  <option value="Vranje"></option>
+  <option value="Leskovac"></option>
+  <option value="Kraljevo"></option>
+  <option value="Požarevac"></option>
+  <option value="Sremska Mitrovica"></option>
+  <option value="Jagodina"></option>
+  <option value="Bor"></option>
+  <option value="Prokuplje"></option>
+  <option value="Loznica"></option>
+  <option value="Zaječar"></option>
+  <option value="Kikinda"></option>
+  <option value="Pirot"></option>
+  <option value="Sombor"></option>
+  <option value="Apatin"></option>
+  <option value="Ruma"></option>
+  <option value="Vrbas"></option>
+  <option value="Inđija"></option>
+  <option value="Bačka Palanka"></option>
+  <option value="Aranđelovac"></option>
+  <option value="Paraćin"></option>
+</datalist>
+
+<!-- Moderation warning modal -->
+<div id="mod-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:900;align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--white);border-radius:20px;padding:24px;width:100%;max-width:360px">
+    <div style="font-size:28px;text-align:center;margin-bottom:12px">⚠️</div>
+    <div style="font-size:16px;font-weight:700;text-align:center;margin-bottom:8px" id="mod-title" data-t='{"sr":"Pažnja","en":"Warning"}'>Pažnja</div>
+    <div style="font-size:14px;color:var(--ink3);text-align:center;line-height:1.55;margin-bottom:20px" id="mod-msg">Poruka sadrži potencijalno neprikladne reči.</div>
+    <div style="display:flex;gap:10px">
+      <button id="mod-cancel-btn" class="btn btn-ghost btn-full" onclick="modDismiss()" data-t='{"sr":"Otkaži","en":"Cancel"}'>Otkaži</button>
+      <button id="mod-confirm-btn" class="btn btn-danger btn-full" onclick="modConfirm()" data-t='{"sr":"Svejedno pošalji","en":"Send anyway"}'>Svejedno pošalji</button>
+    </div>
+  </div>
+</div>
+
+<!-- Cancel confirm -->
+<div id="cancel-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:900;align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--white);border-radius:20px;padding:24px;width:100%;max-width:360px">
+    <div style="font-size:16px;font-weight:700;margin-bottom:8px" data-t='{"sr":"Otkaži prijavu?","en":"Cancel attendance?"}'>Otkaži prijavu?</div>
+    <div style="font-size:14px;color:var(--ink3);line-height:1.55;margin-bottom:20px" data-t='{"sr":"Kasno otkazivanje utiče na ocenu.","en":"Late cancellation affects your rating."}'>Kasno otkazivanje utiče na ocenu.</div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-ghost btn-full" onclick="document.getElementById('cancel-overlay').style.display='none'" data-t='{"sr":"Ostani","en":"Stay"}'>Ostani</button>
+      <button class="btn btn-danger btn-full" onclick="openUnifiedHub('home',0);document.getElementById('cancel-overlay').style.display='none'" data-t='{"sr":"Otkaži prijavu","en":"Cancel attendance"}'>Otkaži prijavu</button>
+    </div>
+  </div>
+</div>
+
+<!-- Create entry menu -->
+<div id="create-entry-overlay" class="sheet-overlay" style="display:none" onclick="if(event.target===this) closeCreateEntryMenu()">
+  <div class="action-sheet action-sheet-create">
+    <div class="action-sheet-sticky-head">
+      <div class="action-sheet-handle"></div>
+      <div class="action-sheet-title" data-t='{"sr":"Šta želiš da uradiš?","en":"What do you want to do?"}'>Šta želiš da uradiš?</div>
+      <div class="action-sheet-copy" data-t='{"sr":"Izaberi najjednostavniji sledeći korak.","en":"Choose the simplest next step."}'>Izaberi najjednostavniji sledeći korak.</div>
+    </div>
+    <div id="create-entry-options" class="create-entry-options"></div>
+    <button class="btn btn-ghost btn-full" type="button" onclick="closeCreateEntryMenu()" data-t='{"sr":"Zatvori","en":"Close"}'>Zatvori</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     USLOVI KORIŠĆENJA
+══════════════════════════════════════════ -->
+<div class="page" id="page-terms" data-lazy-page="true" data-lazy-src="/pages/page-terms.html">
+  <div class="page-loading" data-t='{"sr":"Učitavanje...","en":"Loading..."}'>Učitavanje...</div>
+</div>
+<div class="page" id="page-privacy" data-lazy-page="true" data-lazy-src="/pages/page-privacy.html">
+  <div class="page-loading" data-t='{"sr":"Učitavanje...","en":"Loading..."}'>Učitavanje...</div>
+</div>
+</body></html>
