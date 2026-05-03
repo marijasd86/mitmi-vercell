@@ -1,0 +1,79 @@
+  <div class="app-bar">
+    <button class="btn btn-icon btn-ghost" onclick="navBack()" style="border-radius:8px">&larr;</button>
+    <div class="app-bar-title">Admin događaji</div>
+    <button class="btn btn-ghost btn-sm" onclick="openAdminDrafts()">Osveži</button>
+  </div>
+  <div class="admin-body">
+    <div class="admin-nav-card">
+      <button class="admin-nav-link active" type="button" onclick="openAdminDrafts()">
+        <span>Draftovi</span>
+        <span class="tag tag-outline" id="admin-nav-drafts-count-drafts">0</span>
+      </button>
+      <button class="admin-nav-link" type="button" onclick="openOrganizerReview()">
+        <span>Organizatori</span>
+        <span class="tag tag-outline" id="admin-nav-organizers-count-drafts">0</span>
+      </button>
+      <button class="admin-nav-link" type="button" onclick="openModerationInbox()">
+        <span>Moderation</span>
+        <span class="tag tag-outline" id="admin-nav-moderation-count-drafts">0</span>
+      </button>
+    </div>
+    <div class="admin-grid">
+      <div class="admin-stat"><div class="admin-stat-n" id="admin-stat-pending">0</div><div class="admin-stat-l">Draftovi na čekanju</div></div>
+      <div class="admin-stat"><div class="admin-stat-n" id="admin-stat-ai">0</div><div class="admin-stat-l">Link draftovi</div></div>
+      <div class="admin-stat"><div class="admin-stat-n" id="admin-stat-ghost">0</div><div class="admin-stat-l">Organizatori u pripremi</div></div>
+      <div class="admin-stat"><div class="admin-stat-n" id="admin-stat-plan-signals">0</div><div class="admin-stat-l">Plan signali</div></div>
+      <div class="admin-stat"><div class="admin-stat-n" id="admin-stat-stale">0</div><div class="admin-stat-l">Zastareli draftovi</div></div>
+    </div>
+    <div class="admin-panel">
+      <div class="admin-panel-head">
+        <div>
+          <div class="admin-panel-title">Dodaj događaj</div>
+          <div class="admin-panel-sub">Unesi ga ručno ili sačuvaj link kao draft za ručnu proveru pre objave.</div>
+        </div>
+        <button class="btn btn-outline btn-sm" type="button" onclick="openCreateEvent(null, 'managed')">Dodaj ručno</button>
+      </div>
+      <div class="admin-panel-body">
+        <div class="ai-import-grid">
+          <input class="form-input" type="url" id="ai-import-url" placeholder="https://instagram.com/p/... ili link događaja">
+          <input class="form-input" type="text" id="ai-import-organizer" placeholder="Naziv organizatora ako ga znaš">
+          <div class="admin-inline">
+            <button class="btn btn-purple" onclick="simulateAiImport()">Sačuvaj draft</button>
+          </div>
+          <div class="admin-mini">Link se čuva kao draft. Naslov, vreme, mesto i organizer podaci se potom dopunjuju ručno.</div>
+        </div>
+      </div>
+    </div>
+    <div class="admin-panel">
+      <div class="admin-panel-head">
+        <div>
+          <div class="admin-panel-title">Signali iz planova</div>
+          <div class="admin-panel-sub">Traženja društva koja liče na pravi događaj i možda treba da uđu u katalog.</div>
+        </div>
+        <span class="tag tag-outline" id="admin-plan-signals-badge">0 plan signala</span>
+      </div>
+      <div class="admin-panel-body">
+        <div class="draft-list" id="admin-plan-signal-list"></div>
+      </div>
+    </div>
+    <div class="admin-panel">
+      <div class="admin-panel-head">
+        <div>
+          <div class="admin-panel-title">Red za proveru</div>
+          <div class="admin-panel-sub">Odobri, odbij ili poveži draft sa postojećim organizatorom.</div>
+        </div>
+        <span class="tag tag-outline" id="admin-queue-badge">0 draftova</span>
+      </div>
+      <div class="admin-panel-body">
+        <div class="admin-inline" style="margin-bottom:12px">
+          <button class="btn btn-outline btn-sm" onclick="openModerationInbox()">Prijave i bagovi</button>
+          <button class="btn btn-outline btn-sm" onclick="openOrganizerReview()">Pregled organizatora</button>
+          <button class="btn btn-ghost btn-sm" onclick="cleanupAdminDrafts()">Počisti staro</button>
+        </div>
+        <div class="admin-search-row" style="margin-bottom:12px">
+	          <input class="form-input" type="text" id="admin-draft-search" placeholder="Pretraži draftove po nazivu, organizeru, gradu, submitteru..." data-t-ph='{"sr":"Pretraži draftove po nazivu, organizeru, gradu, submitteru...","en":"Search drafts by title, organizer, city, or submitter..."}' oninput="renderAdminDrafts()">
+        </div>
+        <div class="draft-list" id="admin-draft-list"></div>
+      </div>
+    </div>
+  </div>
