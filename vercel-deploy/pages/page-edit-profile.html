@@ -1,0 +1,88 @@
+  <div class="app-bar">
+    <button class="btn btn-icon btn-ghost" onclick="navBack()" style="border-radius:8px">←</button>
+    <div class="app-bar-title" data-t='{"sr":"Uredi profil","en":"Edit profile"}'>Uredi profil</div>
+    <button class="btn btn-purple btn-sm" id="edit-profile-save-btn" onclick="saveEditedProfile()" data-t='{"sr":"Sačuvaj","en":"Save"}'>Sačuvaj</button>
+  </div>
+  <div class="set-body">
+    <div class="set-section">
+      <div class="set-section-lbl" data-t='{"sr":"OSNOVNO","en":"BASICS"}'>OSNOVNO</div>
+      <div class="edit-profile-section-body">
+        <div class="form-group">
+          <label class="form-label" data-t='{"sr":"Profilna slika","en":"Profile photo"}'>Profilna slika</label>
+          <div style="display:flex;align-items:center;gap:14px">
+            <div class="av av-80 av-purple" id="edit-profile-avatar-preview" data-avatar-url="" style="margin:0">M</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('edit-profile-avatar-input').click()">Dodaj sliku</button>
+              <button type="button" class="btn btn-ghost btn-sm" id="edit-profile-avatar-remove" onclick="clearProfileAvatar()" style="display:none">Ukloni</button>
+            </div>
+          </div>
+          <input type="file" id="edit-profile-avatar-input" accept="image/*" style="display:none" onchange="handleProfileAvatar(this)">
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-t='{"sr":"Ime i prezime","en":"Full name"}'>Ime i prezime</label>
+          <input class="form-input" type="text" id="edit-profile-name" placeholder="Kako želiš da se predstavljaš">
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-t='{"sr":"Korisničko ime","en":"Username"}'>Korisničko ime</label>
+          <input class="form-input" type="text" id="edit-profile-username" placeholder="npr. marija_ns">
+          <div class="form-hint" data-t='{"sr":"Koristi se u profilu i pretrazi.","en":"Used in your profile and search."}'>Koristi se u profilu i pretrazi.</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-t='{"sr":"Grad","en":"City"}'>Grad</label>
+          <input class="form-input form-input-city" id="edit-profile-city" list="sr-city-options" placeholder="Počni da kucaš grad">
+          <div class="form-hint" data-t='{"sr":"Počni da kucaš, pa izaberi grad iz predloga. Prikazuje se samo okvirna lokacija.","en":"Start typing, then pick a city from suggestions. Only approximate location is shown."}'>Počni da kucaš, pa izaberi grad iz predloga. Prikazuje se samo okvirna lokacija.</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-t='{"sr":"Pol","en":"Gender"}'>Pol</label>
+          <select class="form-select" id="edit-profile-gender">
+            <option value="unspecified" data-t='{"sr":"Ne želim da navedem","en":"Prefer not to say"}'>Ne želim da navedem</option>
+            <option value="female" data-t='{"sr":"Žensko","en":"Female"}'>Žensko</option>
+            <option value="male" data-t='{"sr":"Muško","en":"Male"}'>Muško</option>
+          </select>
+          <div class="form-hint" data-t='{"sr":"Koristi se samo za podrazumevani avatar kada nema slike.","en":"Used only for the default avatar when no photo is uploaded."}'>Koristi se samo za podrazumevani avatar kada nema slike.</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-t='{"sr":"Godište","en":"Birth year"}'>Godište</label>
+          <input class="form-input" type="number" id="edit-profile-birth-year" inputmode="numeric" min="1940" max="2010" placeholder="npr. 1998">
+          <div class="form-hint" data-t='{"sr":"Čuva se u backendu radi sigurnijeg povezivanja i preporuka. Ne prikazuje se javno dok to posebno ne uvedemo.","en":"Stored in the backend for safer matching and recommendations. It stays private until we explicitly introduce public age display."}'>Čuva se u backendu radi sigurnijeg povezivanja i preporuka. Ne prikazuje se javno dok to posebno ne uvedemo.</div>
+        </div>
+      </div>
+    </div>
+    <div class="set-section">
+      <div class="set-section-lbl" data-t='{"sr":"O MENI","en":"ABOUT ME"}'>O MENI</div>
+      <div class="edit-profile-section-body">
+        <div class="form-group">
+          <label class="form-label" for="edit-profile-bio" data-t='{"sr":"Kratak opis","en":"Short bio"}'>Kratak opis</label>
+          <textarea class="form-textarea" id="edit-profile-bio" placeholder="Napiši par reči o sebi, interesovanjima i kakvo društvo tražiš."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="set-section">
+      <div class="set-section-lbl" data-t='{"sr":"ZA SVITA PREPORUKE","en":"FOR SVITA RECOMMENDATIONS"}'>ZA SVITA PREPORUKE</div>
+      <div class="edit-profile-section-body">
+        <div class="form-group">
+          <div class="form-label" id="edit-profile-interests-label" data-t='{"sr":"Interesovanja","en":"Interests"}'>Interesovanja</div>
+          <div class="int-grid" id="edit-profile-interest-grid" role="group" aria-labelledby="edit-profile-interests-label">
+            <div class="int-item" data-interest="koncerti_klubovi" onclick="toggleProfileInterest(this)"><span class="int-ico">🎵</span><span class="int-label">Koncerti / klubovi</span></div>
+            <div class="int-item" data-interest="kafane_barovi" onclick="toggleProfileInterest(this)"><span class="int-ico">🍸</span><span class="int-label">Kafane / barovi</span></div>
+            <div class="int-item" data-interest="kultura" onclick="toggleProfileInterest(this)"><span class="int-ico">🎭</span><span class="int-label">Kultura</span></div>
+            <div class="int-item" data-interest="sport" onclick="toggleProfileInterest(this)"><span class="int-ico">⚽</span><span class="int-label">Sport i rekreacija</span></div>
+            <div class="int-item" data-interest="mirnija_druzenja" onclick="toggleProfileInterest(this)"><span class="int-ico">☕</span><span class="int-label">Mirnija druženja</span></div>
+          </div>
+          <div class="form-hint" data-t='{"sr":"Koristi se za predloge događaja i ljudi. Ne prikazuje se javno kao sirov spisak.","en":"Used for event and people recommendations. It is not shown publicly as a raw list."}'>Koristi se za predloge događaja i ljudi. Ne prikazuje se javno kao sirov spisak.</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="edit-profile-social-tempo" data-t='{"sr":"Socijalni tempo","en":"Social tempo"}'>Socijalni tempo</label>
+          <select class="form-select" id="edit-profile-social-tempo">
+            <option value="retko" data-t='{"sr":"Retko · više planiram unapred","en":"Rarely · I plan ahead more"}'>Retko · više planiram unapred</option>
+            <option value="povremeno" data-t='{"sr":"Povremeno · volim dobar plan","en":"Sometimes · I like a good plan"}'>Povremeno · volim dobar plan</option>
+            <option value="cesto" data-t='{"sr":"Često · često sam za događaje i nova druženja","en":"Often · I am regularly up for events and new people"}'>Često · često sam za događaje i nova druženja</option>
+          </select>
+          <div class="form-hint" data-t='{"sr":"Pomaže da predlozi budu prirodniji i sličniji tvom ritmu izlazaka.","en":"Helps make recommendations feel more natural and closer to your social rhythm."}'>Pomaže da predlozi budu prirodniji i sličniji tvom ritmu izlazaka.</div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:4px 0 20px">
+      <button class="btn btn-purple btn-full" onclick="saveEditedProfile()" data-t='{"sr":"Sačuvaj izmene","en":"Save changes"}'>Sačuvaj izmene</button>
+    </div>
+  </div>
